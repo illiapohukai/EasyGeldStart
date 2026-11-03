@@ -1,0 +1,1445 @@
+You are working on the existing GeldStart application in this AI Studio project and its connected GitHub repository.
+
+Act as a senior frontend engineer, product designer, UX writer, learning-experience designer, accessibility specialist, and release engineer.
+
+Your task is to redesign and implement the educational experience directly inside the existing application.
+
+Do not create a separate project.
+Do not replace the current project with a generic starter.
+Do not stop after producing a design plan or code snippets.
+Inspect the existing source code, modify the application, validate it, and prepare it for reliable GitHub Pages deployment.
+
+The current application already works and contains valuable functionality:
+
+- educational financial modules;
+- learning progress;
+- quizzes;
+- compound-interest calculator;
+- budget calculator;
+- a virtual portfolio/depot;
+- local persistence;
+- navigation;
+- legal and educational notices;
+- market-data/demo-mode infrastructure.
+
+Preserve working functionality and existing factual depth.
+
+The main problem is not a lack of content. The current product is:
+
+- too text-heavy;
+- visually dense;
+- difficult to scan on a phone;
+- structured as long articles;
+- repetitive across Start, Lernen, lesson pages, calculators, and Mehr;
+- visually competent but lacking a distinctive product identity;
+- currently vulnerable to deployment problems such as a white screen on GitHub Pages.
+
+The new product should feel like:
+
+“A polished mobile-first financial learning application that combines the clarity and progression of Duolingo with the calm, credible visual language of a modern European fintech application.”
+
+Do not copy Duolingo’s branding, visual assets, mascots, hearts, streak pressure, lives, leaderboards, childish style, or exact layouts.
+
+==================================================
+1. NON-NEGOTIABLE WORKFLOW
+==================================================
+
+Work in the following order:
+
+PHASE 1 — Inspect and document the existing architecture.
+PHASE 2 — Stabilize dependencies and deployment.
+PHASE 3 — Build the reusable step-based learning system.
+PHASE 4 — migrate all existing lessons into the system.
+PHASE 5 — simplify Start, Lernen, calculators, and Mehr.
+PHASE 6 — implement the new visual identity and branding.
+PHASE 7 — validate functionality, mobile behavior, build, preview, and deployment.
+
+Do not redesign random individual pages before understanding the shared architecture.
+
+Do not rewrite the entire application blindly.
+
+Do not make destructive changes to the portfolio/depot module as part of this task.
+
+The portfolio can receive small visual compatibility updates needed to match the application shell, typography, navigation, or shared components, but do not rebuild its data layer, market-data system, transaction logic, or portfolio calculations during this task.
+
+==================================================
+2. INSPECT THE EXISTING PROJECT FIRST
+==================================================
+
+Before editing, inspect the entire project.
+
+Determine and report internally:
+
+- the actual framework;
+- React version;
+- Vite version;
+- TypeScript configuration;
+- Tailwind version;
+- router;
+- package manager;
+- package-lock or other lockfile;
+- application entry point;
+- route structure;
+- component structure;
+- lesson content structure;
+- state and persistence implementation;
+- localStorage keys and schemas;
+- calculator logic;
+- portfolio architecture;
+- server.ts responsibilities;
+- API and market-data dependencies;
+- environment variables;
+- existing error handling;
+- current deployment files;
+- GitHub Actions files;
+- GitHub Pages base-path handling;
+- PWA/manifest setup;
+- icons and favicons;
+- AI Studio-specific metadata;
+- Lovable-specific remnants, if any;
+- existing tests;
+- existing accessibility behavior.
+
+Do not trust README or metadata over the source code.
+
+Use package.json, lockfile, imports, source files, and configuration as the source of truth.
+
+Preserve working calculations and factual educational content wherever possible.
+
+==================================================
+3. CORE PRODUCT TRANSFORMATION
+==================================================
+
+Transform the educational portion from long vertically scrolling articles into a reusable step-based “Lesson Player”.
+
+The new learning loop is:
+
+Learn one idea
+→ answer or interact
+→ receive immediate feedback
+→ continue to the next idea
+→ complete a practical scenario
+→ see a concise summary
+→ optionally apply the idea in the virtual portfolio.
+
+Each lesson must feel like a short interactive session instead of an article.
+
+A user must never be required to read the entire lesson before completing the first meaningful interaction.
+
+The educational modules currently include at least:
+
+1. Grundlagen der Geldanlage
+2. Der Zinseszins-Effekt
+3. Anlageklassen im Überblick
+4. Sparen mit kleinen Beträgen & Kindergeld
+5. Altersvorsorge & langer Horizont
+6. Hilfe vom Staat verstehen
+7. Budget & Taschengeld planen as an additional practical module
+
+Preserve all useful subjects, examples, calculations, warnings, and quizzes.
+
+Restructure their presentation rather than deleting their educational value.
+
+==================================================
+4. REUSABLE LESSON PLAYER
+==================================================
+
+Build one reusable Lesson Player for all lessons.
+
+Do not create seven unrelated hard-coded page implementations.
+
+The Lesson Player should support typed step variants, conceptually including:
+
+- intro;
+- explanation;
+- comparison;
+- visual concept;
+- scenario;
+- multiple-choice question;
+- true/false question;
+- interactive calculator;
+- slider interaction;
+- sorting or choice task when appropriate;
+- portfolio connection;
+- optional detail;
+- summary;
+- completion.
+
+Adapt this model to the existing source architecture.
+
+Use strict TypeScript types.
+
+Avoid unnecessary any usage.
+
+Each lesson should be represented through a structured content definition, while shared UI and behavior remain in reusable components.
+
+The Lesson Player must include:
+
+- close/back action;
+- lesson title;
+- current step number;
+- total step number;
+- visible progress bar;
+- one main content area;
+- immediate question feedback;
+- persistent bottom action area;
+- Continue action;
+- Retry action where appropriate;
+- resume support;
+- accessible keyboard behavior;
+- mobile safe-area support;
+- reduced-motion support.
+
+The bottom action must not cover page content.
+
+The current step must be saved after every meaningful interaction.
+
+If the user leaves at step 4 of 8 and returns, the application must offer:
+
+“Grundlagen fortsetzen · Schritt 4 von 8”
+
+Do not force the user to restart the lesson.
+
+==================================================
+5. MICRO-LEARNING RULES
+==================================================
+
+Apply the following editorial rules to every lesson step:
+
+- one primary idea per step;
+- approximately 25–65 visible words of main teaching text;
+- maximum 90 visible words only when genuinely necessary;
+- no long article paragraphs;
+- paragraphs should normally remain within 2–4 mobile lines;
+- one main interaction per step;
+- one primary CTA;
+- no more than three answer options unless the learning objective requires more;
+- important details must not be deleted merely to shorten the screen;
+- secondary details should move into an optional “Mehr erfahren” or information panel;
+- legal and methodological details must move into a compact explanation, source view, or Mehr section;
+- avoid repeating the same disclaimer as a large block on every screen;
+- use plain, respectful German appropriate for users around 16–20 years old;
+- avoid childish wording;
+- explain technical terms at first use;
+- do not oversimplify important financial risks;
+- do not make personalized financial recommendations.
+
+Each lesson should normally contain approximately 7–10 meaningful steps, but do not force the same number on every lesson.
+
+Use a rhythm such as:
+
+1. Intro/hook
+2. Short explanation
+3. Immediate understanding check
+4. Second concept
+5. Interactive example
+6. Scenario-based decision
+7. Feedback/reflection
+8. Summary/completion
+
+Not every step should be a quiz.
+
+Avoid interaction fatigue.
+
+==================================================
+6. EXAMPLE: GRUNDLAGEN MODULE
+==================================================
+
+Use the existing “Grundlagen der Geldanlage” content, but transform it conceptually into a flow similar to this:
+
+Step 1 — Intro
+
+- title: Grundlagen
+- hook: “Warum verlieren 100 € mit der Zeit an Wert?”
+- estimated duration;
+- number of steps;
+- compact visual;
+- Start action.
+
+Step 2 — Sparen oder investieren?
+
+Explain briefly:
+
+- saving keeps money accessible;
+- investing offers long-term opportunities;
+- investment value can fluctuate.
+
+Use a visual comparison instead of a long paragraph.
+
+Step 3 — Immediate scenario
+
+Example:
+
+“Du brauchst 1.000 € in sechs Monaten. Wo gehört das Geld hin?”
+
+Show three large answer choices.
+
+After selection, provide immediate explanatory feedback.
+
+Step 4 — Inflation
+
+Explain:
+
+“100 € bleiben auf dem Konto 100 €. Wenn Preise steigen, kannst du dir später trotzdem weniger dafür kaufen.”
+
+Use an interactive or visual comparison between today and future purchasing power.
+
+Step 5 — Inflation check
+
+Ask one short question and provide immediate feedback.
+
+Step 6 — Notgroschen
+
+Explain the emergency reserve using a realistic scenario such as a broken laptop or an unexpected payment.
+
+Keep detailed reserve guidelines inside an optional information panel.
+
+Step 7 — Diversifikation
+
+Use a visual choice:
+
+- one concentrated position;
+- diversified basket across companies, sectors, and countries.
+
+Step 8 — Leonie scenario
+
+Preserve the useful existing example but convert it into a decision:
+
+- saved amount;
+- upcoming driving licence expense;
+- remaining reserve;
+- user chooses the sensible action;
+- explanation appears after the answer.
+
+Step 9 — Completion
+
+Show:
+
+- concise learning summary;
+- lesson completion;
+- progress gained;
+- next lesson action;
+- optional “Im Depot ausprobieren”.
+
+Apply the same instructional logic—not identical content—to all other modules.
+
+==================================================
+7. IMMEDIATE FEEDBACK
+==================================================
+
+Questions must provide immediate feedback.
+
+Correct answer example:
+
+“Richtig. Geld, das du bald brauchst, sollte keinen starken Kursschwankungen ausgesetzt sein.”
+
+Incorrect answer example:
+
+“Noch nicht ganz. Eine einzelne Aktie kann genau dann im Minus sein, wenn du das Geld brauchst.”
+
+Requirements:
+
+- explain why the answer is correct or incorrect;
+- do not shame the user;
+- do not use failure sounds or aggressive animations;
+- allow retrying when educationally useful;
+- allow continuing after the explanation;
+- do not permanently block progress after an incorrect answer;
+- save completed interactions;
+- separate the answer state from lesson completion;
+- ensure feedback is accessible to screen readers.
+
+Wrong answers should become learning opportunities.
+
+==================================================
+8. LEARNING PROGRESS MODEL
+==================================================
+
+Upgrade progress persistence so it can store:
+
+- current lesson;
+- current step;
+- completed steps;
+- completed lessons;
+- quiz answers;
+- retry attempts where useful;
+- lesson completion timestamps if already appropriate;
+- overall progress;
+- last meaningful activity.
+
+Maintain compatibility with existing stored progress when possible.
+
+If a storage migration is required:
+
+- create a versioned schema;
+- migrate valid existing progress;
+- handle malformed data safely;
+- never crash the application because localStorage contains invalid data;
+- do not silently erase all existing user progress;
+- provide a documented fallback.
+
+Keep learning progress and portfolio data independent.
+
+Resetting learning progress must not reset the portfolio.
+
+Resetting the portfolio must not reset learning progress.
+
+==================================================
+9. LEARNING PATH SCREEN
+==================================================
+
+Redesign the Lernen screen as a compact vertical learning path.
+
+Do not show seven large text-heavy cards containing all metadata.
+
+Each path item should normally show only:
+
+- module number;
+- module title;
+- one short description line;
+- estimated duration;
+- completion or current status.
+
+Use a clear visual path or progress line as a distinctive GeldStart design element.
+
+Conceptually:
+
+01 — Grundlagen
+02 — Zinseszins
+03 — Anlageklassen
+04 — Kleine Beträge
+05 — Altersvorsorge
+06 — Staatliche Hilfe
+
+Show “Budget & Taschengeld” separately as a practical bonus/tool module.
+
+Do not display all of these on every card:
+
+- number of compact sections;
+- number of examples;
+- number of interactive modules;
+- number of questions;
+- long category labels;
+- repeated “Noch offen” labels.
+
+Show detailed information only after opening a compact lesson preview.
+
+The recommended order should be clear, but lessons must not be permanently locked.
+
+Users, teachers, and returning learners should be allowed to open any lesson.
+
+A recommendation such as “Empfohlen: zuerst Grundlagen” is acceptable.
+
+Hard locking is not.
+
+==================================================
+10. START SCREEN
+==================================================
+
+Redesign Start as a dashboard, not a marketing landing page and not a duplicate of Lernen.
+
+After first use, the Start screen should focus on:
+
+1. continue the current lesson;
+2. overall progress;
+3. compact portfolio status;
+4. one optional daily question or quick tool.
+
+Recommended hierarchy:
+
+- brief greeting or GeldStart heading;
+- one dominant “Weiterlernen” card;
+- current lesson and step;
+- compact progress summary;
+- compact Depot card;
+- one secondary learning impulse.
+
+Do not show the complete list of all modules on Start.
+
+Do not repeat all product explanations on every visit.
+
+Do not show long product-positioning paragraphs after onboarding.
+
+For first-time users only, a short introduction is acceptable:
+
+“Finanzen verstehen. Ohne Fachchinesisch.
+
+Kurze Lektionen, echte Beispiele und ein Depot mit virtuellem Geld.”
+
+Primary action:
+
+“Loslegen”
+
+After completion, this onboarding must not continue to dominate the Start screen.
+
+==================================================
+11. DEPOT INTEGRATION
+==================================================
+
+Preserve the existing virtual portfolio as a separate practical section.
+
+Do not rebuild its market-data architecture during this task.
+
+Do not change transaction calculations unless a verified bug requires it.
+
+Small visual adjustments may be made to:
+
+- typography;
+- spacing;
+- navigation;
+- header;
+- shared buttons;
+- cards;
+- global tokens;
+- empty states.
+
+Learning lessons may link to relevant portfolio actions, for example:
+
+- after diversification: “Streuung im Depot ansehen”;
+- after asset classes: “ETF und Einzelaktie vergleichen”;
+- after a scenario: one reflection question.
+
+These links must not break lessons when the portfolio or market-data backend is unavailable.
+
+Never reward financial profit as proof of learning success.
+
+Learning progress should be earned through comprehension and completion, not portfolio performance.
+
+==================================================
+12. CALCULATOR SIMPLIFICATION
+==================================================
+
+Preserve all correct calculator logic.
+
+Do not replace working calculations with decorative mockups.
+
+Redesign the calculators progressively.
+
+Compound-interest calculator:
+
+The primary view should show only the most important controls:
+
+- monthly contribution;
+- duration;
+- assumed annual return.
+
+The result should emphasize:
+
+- total contribution;
+- estimated growth;
+- estimated final value;
+- one clear chart;
+- one short explanatory conclusion.
+
+Move secondary settings such as starting capital or additional methodology into:
+
+- “Weitere Einstellungen”;
+- “Wie wird das berechnet?”;
+- information panels.
+
+Do not show a large legal and mathematical text block by default.
+
+Replace overly long generated summaries with a concise explanation such as:
+
+“Du zahlst insgesamt 15.000 € ein. Bei dieser unverbindlichen Annahme entstehen rechnerisch 19.650 € zusätzlicher Ertrag.”
+
+Keep the assumptions and limitations accessible.
+
+Budget calculator:
+
+The primary view should emphasize:
+
+- income;
+- expenses;
+- amount remaining.
+
+Allow users to add categories progressively.
+
+Do not present one allocation as personalized advice.
+
+Use language such as:
+
+“Eine mögliche Lernaufteilung”
+
+and make it clear that the user’s circumstances may differ.
+
+==================================================
+13. “MEHR” SCREEN
+==================================================
+
+Transform Mehr from one long legal/information page into a structured menu.
+
+Recommended groups:
+
+Werkzeuge
+- Zinseszins-Rechner
+- Budget-Rechner
+
+Über GeldStart
+- So funktioniert das Lernen
+- Über das Projekt
+- Bildungszweck
+
+Daten & Transparenz
+- Marktdaten und Datenstatus
+- Datenschutz
+- Quellen
+
+Einstellungen
+- Lernfortschritt zurücksetzen
+- Übungsdepot zurücksetzen
+
+Each item can open a dedicated compact screen, dialog, sheet, or accessible disclosure.
+
+Do not place every full explanation directly on the Mehr overview.
+
+Preserve reliable external sources and legal information, but make them discoverable rather than visually dominant.
+
+Reset actions must:
+
+- clearly describe exactly what will be deleted;
+- require explicit confirmation;
+- remain independent from each other;
+- be accessible;
+- not use a generic browser alert if the existing UI supports better dialogs.
+
+==================================================
+14. CONTENT EDITING
+==================================================
+
+Edit all visible German copy.
+
+Goals:
+
+- shorter;
+- clearer;
+- more direct;
+- less repetitive;
+- still factually complete;
+- still respectful;
+- still legally cautious;
+- suitable for 16–20-year-olds.
+
+Remove duplicated explanations across:
+
+- Start;
+- Lernen;
+- lesson pages;
+- calculators;
+- Mehr;
+- footer;
+- onboarding.
+
+Do not repeat the full disclaimer multiple times on the same screen.
+
+Use a compact global disclaimer where needed:
+
+“Nur zu Bildungszwecken – keine Anlageberatung.”
+
+The complete explanation belongs in:
+
+“Mehr → Bildungszweck & Hinweise”.
+
+Preserve important qualifications such as:
+
+- returns are assumptions, not guarantees;
+- investments can lose value;
+- market values fluctuate;
+- taxes, costs, and inflation may affect results;
+- government rules and benefits can change;
+- planned programs must not be presented as currently active.
+
+For time-sensitive government content:
+
+- preserve current status labels;
+- distinguish active, planned, and changed rules;
+- include a status date or source where appropriate;
+- do not invent current amounts;
+- do not make unsupported legal claims.
+
+Do not fabricate facts simply to make a lesson shorter.
+
+==================================================
+15. TYPOGRAPHY
+==================================================
+
+The current mobile text is too small and too dense.
+
+Do not solve this by only increasing all font sizes.
+
+Solve it through:
+
+- less visible text;
+- better hierarchy;
+- larger readable body text;
+- shorter line lengths;
+- step-based presentation.
+
+Target mobile typography approximately:
+
+- primary screen heading: 32–36 px;
+- lesson-step heading: 26–30 px;
+- section heading: 22–26 px;
+- body text: 17–19 px;
+- answer choices: 17–18 px;
+- primary buttons: approximately 17 px;
+- secondary labels: 14–15 px;
+- minimum supporting text: 13–14 px.
+
+Adapt these values responsively rather than hard-coding one size everywhere.
+
+Requirements:
+
+- no important interface text at 11–12 px;
+- readable line height around 1.5–1.6 for body copy;
+- manageable line length on tablet and desktop;
+- no four-line button labels;
+- no clipped text;
+- support browser/system text scaling;
+- preserve hierarchy at 320px width.
+
+==================================================
+16. VISUAL IDENTITY
+==================================================
+
+Create a distinctive GeldStart visual identity.
+
+The design should feel:
+
+- calm;
+- modern;
+- credible;
+- youthful but not childish;
+- educational;
+- clear;
+- slightly editorial;
+- polished;
+- memorable;
+- appropriate for a European financial education product.
+
+Suggested palette direction:
+
+- warm off-white or cream background;
+- deep green as the main brand color;
+- mint or restrained lime only for progress and success;
+- warm amber for warnings;
+- graphite for main text;
+- red only for errors or negative financial values.
+
+Do not use excessive gradients.
+
+Do not use glassmorphism everywhere.
+
+Do not make every section a large white card.
+
+Do not copy a banking application or professional trading terminal.
+
+Do not use emoji as primary UI icons.
+
+Establish reusable design tokens:
+
+- colors;
+- typography;
+- spacing;
+- radius;
+- shadows;
+- borders;
+- motion;
+- focus states.
+
+Create meaningful component variants:
+
+- lesson card;
+- question card;
+- scenario card;
+- comparison card;
+- interactive card;
+- insight card;
+- summary card.
+
+The application should not look like a generic component-library demo.
+
+==================================================
+17. GELDSTART SIGNATURE ELEMENT
+==================================================
+
+Create a recognizable “learning path” visual motif.
+
+It may appear as a line with nodes, conceptually:
+
+●━━━━●━━━━○━━━━○
+
+Use it consistently in:
+
+- the learning path;
+- lesson progress;
+- completion screen;
+- progress summary.
+
+Do not overuse it decoratively.
+
+It should visually support the product promise:
+
+“Schritt für Schritt Finanzwissen aufbauen.”
+
+==================================================
+18. VISUALS AND ILLUSTRATIONS
+==================================================
+
+Do not depend on external AI-generated images.
+
+Build the first redesign using:
+
+- CSS visuals;
+- inline SVG;
+- existing icon libraries;
+- simple diagrams;
+- interactive comparisons;
+- lightweight charts;
+- progress visuals;
+- structured cards.
+
+Examples:
+
+- saving versus investing comparison;
+- purchasing-power decline;
+- risk spectrum;
+- emergency-fund scenario;
+- single stock versus diversified basket;
+- budget allocation;
+- compound-interest growth;
+- learning-path progression.
+
+All visuals must:
+
+- support the educational point;
+- remain readable on mobile;
+- have accessible text alternatives or summaries;
+- use the same visual style;
+- avoid unnecessary decoration;
+- remain lightweight.
+
+Do not fetch unlicensed stock imagery.
+
+==================================================
+19. MOTION
+==================================================
+
+Use restrained motion for:
+
+- progress updates;
+- step transitions;
+- answer feedback;
+- module completion;
+- calculator value changes;
+- path activation.
+
+Requirements:
+
+- short and responsive;
+- never block navigation;
+- never delay feedback;
+- respect prefers-reduced-motion;
+- no constant bouncing;
+- no aggressive shaking;
+- no excessive confetti;
+- no full-screen animation after every question.
+
+A small completion effect is acceptable after completing a full module.
+
+==================================================
+20. MOBILE-FIRST REQUIREMENTS
+==================================================
+
+Design first for phones.
+
+Test at least:
+
+- 320px width;
+- 375px width;
+- 390px width;
+- 430px width;
+- 768px width;
+- 1024px and larger.
+
+Requirements:
+
+- no horizontal scrolling;
+- no clipping;
+- no overlapping bottom navigation;
+- no content hidden under fixed actions;
+- minimum comfortable touch targets;
+- safe-area support;
+- readable inputs;
+- accessible quiz options;
+- responsive calculators;
+- responsive charts;
+- lesson content should usually fit into one mobile viewport or a short controlled scroll;
+- no long article-style lesson page;
+- desktop layouts must not stretch text across the entire screen.
+
+The bottom navigation should remain:
+
+- Start
+- Lernen
+- Depot
+- Mehr
+
+Keep it compact and readable.
+
+Do not add a fifth primary tab.
+
+==================================================
+21. ACCESSIBILITY
+==================================================
+
+Implement:
+
+- semantic HTML;
+- logical heading hierarchy;
+- keyboard navigation;
+- visible focus states;
+- sufficient contrast;
+- accessible labels;
+- accessible error messages;
+- accessible answer feedback;
+- color-independent success/error indicators;
+- text summaries for charts;
+- reduced-motion support;
+- German language metadata;
+- appropriate live regions only where useful;
+- correct dialog focus management;
+- buttons rather than clickable divs;
+- no focus traps.
+
+Question feedback must be understandable both visually and through a screen reader.
+
+==================================================
+22. ERROR RESILIENCE
+==================================================
+
+The application must never show a completely blank white screen because one optional part fails.
+
+Implement an application-level Error Boundary.
+
+Provide a styled fallback containing:
+
+- a clear German message;
+- retry action;
+- return-to-Start action;
+- a concise technical identifier if useful;
+- no raw stack trace for normal users.
+
+Also add component-level error handling around optional systems such as:
+
+- market data;
+- portfolio charts;
+- external API calls;
+- optional server-backed features.
+
+If market data fails:
+
+- Start, Lernen, calculators, Mehr, and lesson progress must continue working;
+- Depot must show an honest unavailable/demo/stale state;
+- React must not crash the entire application.
+
+Do not silently hide errors during development.
+
+==================================================
+23. REMOVE FOREIGN BRANDING AND ICONS
+==================================================
+
+The current project may contain an AI Studio, Lovable, Vite, lava-like, or other foreign browser-tab icon.
+
+Perform a complete branding audit.
+
+Inspect and clean where appropriate:
+
+- index.html;
+- public/favicon.ico;
+- public/favicon.svg;
+- public/apple-touch-icon.png;
+- public/manifest.json;
+- public/site.webmanifest;
+- manifest icons;
+- src/assets;
+- metadata.json;
+- theme-color;
+- Open Graph image;
+- Twitter image;
+- page title;
+- description;
+- application name;
+- shortcut icons;
+- external favicon links;
+- AI Studio metadata;
+- Lovable metadata;
+- Vite starter assets.
+
+Remove unused foreign branding from the production application.
+
+Create an original, simple GeldStart favicon and app icon.
+
+Suggested direction:
+
+- deep green background;
+- light or mint symbol;
+- a stylized “G” or simple step/growth motif;
+- readable at very small sizes;
+- no dollar sign;
+- no trading-candlestick logo;
+- no copied bank identity.
+
+Provide appropriate formats where supported:
+
+- favicon.svg;
+- PNG fallback;
+- apple-touch-icon;
+- manifest icons.
+
+Set:
+
+- page title: “GeldStart” or the existing approved capitalization;
+- concise German description;
+- correct theme color;
+- correct mobile web-app metadata.
+
+Verify that the foreign icon no longer appears in the browser tab after a fresh build.
+
+Document that browser favicon caching may require a hard refresh, private tab, or cache invalidation.
+
+==================================================
+24. DEPENDENCY STABILITY
+==================================================
+
+The current project previously required:
+
+npm install --legacy-peer-deps
+
+because of a peer-dependency conflict involving Vite and Tailwind-related packages.
+
+Inspect the exact dependency versions.
+
+Resolve the dependency conflict properly if this can be done safely.
+
+Goals:
+
+- npm install should succeed without --force;
+- preferably npm ci should succeed using the committed lockfile;
+- package.json and package-lock.json must agree;
+- Vite, React plugin, Tailwind plugin, TypeScript, and tsx versions must be compatible;
+- no duplicate incompatible Vite versions;
+- no unnecessary packages;
+- no missing tsx executable;
+- no unresolved peer-dependency conflict.
+
+Do not perform broad uncontrolled upgrades.
+
+Use compatible versions supported by the actual code.
+
+If normal npm install cannot be restored without an unsafe migration:
+
+- document the exact limitation;
+- keep the deployment workflow functional;
+- do not falsely claim it was resolved.
+
+Never use --force as the permanent production solution.
+
+==================================================
+25. STATIC FRONTEND VERSUS SERVER.TS
+==================================================
+
+The current development command may run:
+
+tsx server.ts
+
+Inspect exactly what server.ts does.
+
+Determine:
+
+- whether it only hosts Vite during development;
+- whether it provides API endpoints;
+- whether it injects environment variables;
+- whether the learning frontend needs it;
+- whether the Depot needs it;
+- whether a static production build can function without it.
+
+The educational frontend must work as a static production build on GitHub Pages.
+
+GitHub Pages cannot run server.ts.
+
+Therefore:
+
+- Start must work statically;
+- Lernen must work statically;
+- Lesson Player must work statically;
+- local progress must work statically;
+- calculators must work statically;
+- Mehr must work statically;
+- navigation must work statically.
+
+If Depot market data requires server.ts or a protected API proxy:
+
+- isolate that dependency;
+- keep the Depot interface stable;
+- provide a clear demo/unavailable status when no backend exists;
+- do not expose secrets in frontend source;
+- do not allow the missing backend to crash the application;
+- document the future backend deployment requirement.
+
+Do not pretend that GitHub Pages runs server-side code.
+
+==================================================
+26. GITHUB PAGES: ELIMINATE THE WHITE SCREEN
+==================================================
+
+The existing project previously displayed a completely white screen after being exported from AI Studio directly to GitHub and opened through GitHub Pages.
+
+Fix this as part of the implementation.
+
+The target repository is currently named “GeldStart”, but do not blindly hard-code the repository name if the project already supports a reliable environment-based base path.
+
+Inspect the exact connected repository and deployment environment.
+
+The application will be served under a path conceptually like:
+
+https://<username>.github.io/GeldStart/
+
+Requirements:
+
+1. Configure Vite’s base path correctly for:
+   - local development;
+   - local production preview;
+   - GitHub Pages project-site deployment.
+
+2. Ensure all JavaScript, CSS, font, icon, image, manifest, and favicon references work under the repository subpath.
+
+3. Avoid root-absolute asset paths that incorrectly request:
+   /assets/...
+   when the deployed application needs:
+   /GeldStart/assets/...
+
+4. Do not scatter the repository name throughout source files.
+
+5. Prefer a centralized or environment-aware base-path solution.
+
+6. Verify routing behavior.
+
+7. If using browser-history routing without GitHub Pages fallback support:
+   - implement a reliable static-host-compatible approach;
+   - or use hash routing;
+   - or add a tested 404 fallback strategy.
+
+8. Directly opening and refreshing supported routes must not result in GitHub’s 404 page.
+
+9. Add or repair:
+
+.github/workflows/deploy.yml
+
+10. The workflow must:
+   - run on pushes to main;
+   - support manual execution;
+   - use a stable Node version;
+   - install dependencies reproducibly;
+   - run checks;
+   - build the application;
+   - upload the correct output directory;
+   - deploy through GitHub Pages;
+   - use correct permissions;
+   - fail visibly when the build fails.
+
+11. Publish the actual production directory, normally dist.
+
+12. Do not deploy raw TypeScript source files as the final website.
+
+13. Do not require the user to manually move dist.
+
+14. Do not require the user to manually select and upload compiled files.
+
+15. Keep the workflow understandable and documented.
+
+==================================================
+27. DEPLOYMENT VALIDATION
+==================================================
+
+A successful npm run build alone is not sufficient validation.
+
+Before declaring the task complete, perform as many of the following as the environment allows:
+
+1. Clean stale build output.
+2. Install dependencies.
+3. Run typecheck.
+4. Run lint.
+5. Run tests.
+6. Run production build.
+7. Run production preview.
+8. Load the preview in the browser.
+9. Verify that the interface actually renders.
+10. Verify that JavaScript and CSS assets load without 404 errors.
+11. Verify favicon and manifest URLs.
+12. Verify the app with the GitHub Pages base path.
+13. Verify the main route.
+14. Verify lesson routes.
+15. Verify route refresh behavior.
+16. Verify Start, Lernen, Depot, and Mehr.
+17. Verify that optional API failure cannot produce a white screen.
+18. Verify localStorage persistence.
+19. Verify step resume behavior.
+20. Verify reset behavior.
+21. Verify mobile layouts.
+22. Verify compilation after a clean checkout where possible.
+23. Verify that the workflow references the real project root.
+24. Verify that the workflow uploads the actual build output.
+25. Verify that no secrets are committed.
+
+If you have access to the connected GitHub environment, also verify:
+
+- the workflow starts;
+- build succeeds;
+- deploy succeeds;
+- the published URL renders;
+- the deployed HTML references valid built assets;
+- no white screen appears.
+
+Do not claim the published URL was manually verified if you could not open it.
+
+Clearly distinguish:
+
+- checks actually executed;
+- checks completed through source inspection;
+- checks blocked by the environment.
+
+==================================================
+28. ROUTING AND RESUME BEHAVIOR
+==================================================
+
+The Lesson Player must support reliable navigation.
+
+Requirements:
+
+- browser back behavior should be predictable;
+- leaving a lesson should not silently discard progress;
+- returning should offer resume;
+- refreshing must not reset the current step;
+- invalid lesson IDs should show a proper fallback;
+- invalid step indexes should recover safely;
+- lesson completion should not create redirect loops;
+- GitHub Pages routing should remain compatible.
+
+Avoid deeply nested route complexity if it makes static deployment unreliable.
+
+==================================================
+29. TESTING
+==================================================
+
+Add or update focused tests for:
+
+- progress storage migration;
+- malformed localStorage;
+- lesson resume;
+- lesson completion;
+- answer feedback logic;
+- calculator core logic;
+- reset learning progress;
+- portfolio data remaining untouched by learning reset;
+- learning data remaining untouched by portfolio reset;
+- invalid route recovery;
+- base-path helpers if applicable;
+- error boundary;
+- optional API failure behavior.
+
+Do not add superficial snapshot tests merely to inflate test count.
+
+Test business logic separately from visual presentation where possible.
+
+==================================================
+30. DO NOT DO THESE THINGS
+==================================================
+
+Do not:
+
+- create a new unrelated project;
+- replace the existing working application with a starter template;
+- delete the portfolio;
+- rewrite market-data calculations during this task;
+- fabricate live market data;
+- expose an API key;
+- make server.ts mandatory for the educational frontend;
+- leave the lessons as long vertical articles;
+- merely wrap the long articles in accordions;
+- merely increase font sizes;
+- delete important educational meaning to shorten screens;
+- turn every step into a quiz;
+- copy Duolingo’s brand;
+- add a mascot;
+- add hearts or lives;
+- add profit leaderboards;
+- reward risky financial performance;
+- add streak pressure;
+- block all lessons behind previous completion;
+- create non-functional controls;
+- use placeholder buttons;
+- use random external images;
+- retain foreign favicon/branding;
+- report an untested deployment as working;
+- commit secrets;
+- rely permanently on npm --force;
+- let an API failure crash the whole application;
+- leave TODO text visible to users;
+- duplicate all seven lessons as separate monolithic components.
+
+==================================================
+31. ACCEPTANCE CRITERIA
+==================================================
+
+The implementation is complete only if:
+
+PRODUCT
+
+- Start is a focused dashboard;
+- Lernen is a compact visual learning path;
+- lessons use the reusable Lesson Player;
+- no lesson remains a single giant article page;
+- each lesson presents one major idea per step;
+- questions provide immediate explanatory feedback;
+- progress saves at step level;
+- users can resume;
+- all existing core lessons remain accessible;
+- Budget remains available as a practical module;
+- secondary details remain available without dominating screens;
+- calculators retain correct logic;
+- Mehr becomes a compact structured menu;
+- Depot remains functional and independent.
+
+DESIGN
+
+- mobile body text is readable;
+- visual hierarchy is clear;
+- the interface has a distinctive GeldStart identity;
+- the learning-path motif is used consistently;
+- the application feels polished but not childish;
+- CSS/SVG visuals support the educational content;
+- no major mobile overflow exists;
+- bottom navigation and actions respect safe areas;
+- the product is no longer text-heavy or visually generic.
+
+TECHNICAL
+
+- foreign favicon and branding are removed;
+- new GeldStart icon works;
+- metadata is correct;
+- dependency installation is stable;
+- typecheck passes;
+- production build passes;
+- production preview renders;
+- the learning frontend works without server.ts;
+- optional backend failure does not cause a white screen;
+- GitHub Pages base path is correct;
+- workflow exists and uploads the right output;
+- no broken asset paths remain;
+- no secrets are exposed;
+- localStorage data is safe and versioned;
+- direct loading and refresh behavior are documented and reliable.
+
+==================================================
+32. FINAL RESPONSE FORMAT
+==================================================
+
+After implementation, provide a concrete final report with the following sections:
+
+1. Architecture discovered
+   - framework;
+   - build tool;
+   - router;
+   - styling;
+   - state;
+   - persistence;
+   - role of server.ts;
+   - deployment architecture.
+
+2. Educational redesign
+   - Lesson Player architecture;
+   - supported step types;
+   - all migrated lessons;
+   - immediate feedback behavior;
+   - progress and resume model.
+
+3. Content changes
+   - duplicated content removed;
+   - text made shorter;
+   - details moved into optional layers;
+   - important information preserved.
+
+4. Screen redesign
+   - Start;
+   - Lernen;
+   - Lesson Player;
+   - calculators;
+   - Mehr;
+   - small Depot compatibility changes, if any.
+
+5. Visual identity
+   - design system;
+   - path motif;
+   - typography;
+   - colors;
+   - visual components;
+   - animations;
+   - accessibility.
+
+6. Branding cleanup
+   - every foreign favicon or metadata reference removed;
+   - new favicon/app icon files;
+   - title, description, manifest, and theme changes.
+
+7. Dependency repair
+   - original conflict;
+   - versions changed;
+   - whether npm install and npm ci work;
+   - lockfile status.
+
+8. White-screen root cause and fix
+   - exact diagnosed cause or causes;
+   - Vite base-path handling;
+   - routing fix;
+   - asset-path fix;
+   - error-boundary behavior;
+   - server/API isolation.
+
+9. GitHub Pages deployment
+   - workflow path;
+   - build command;
+   - output folder;
+   - exact Pages setting required;
+   - expected published URL;
+   - whether the published deployment was actually verified.
+
+10. Validation
+   - commands actually run;
+   - build result;
+   - preview result;
+   - typecheck;
+   - lint;
+   - tests;
+   - mobile checks;
+   - deployment checks;
+   - any checks blocked by the environment.
+
+11. Files changed
+   - important created files;
+   - important modified files;
+   - deleted files;
+   - reason for each major change.
+
+12. Known limitations
+   - remaining backend or market-data limitations;
+   - anything requiring external deployment;
+   - honest unresolved issues.
+
+13. Exact next steps for me
+   - only actions that genuinely require manual access;
+   - keep steps concise and beginner-friendly;
+   - do not ask me to manually move dist;
+   - do not ask me to reconstruct files that you can create yourself.
+
+Begin by inspecting the existing project. Then implement the redesign and deployment fixes directly. Do not stop after analysis and do not ask for confirmation between phases.

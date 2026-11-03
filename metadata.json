@@ -1,0 +1,8 @@
+{
+  "name": "GeldStart – Finanzbildung für junge Leute",
+  "description": "Finanzen verstehen ohne Fachchinesisch: Kurze interaktive Lektionen, Rechner und ein virtuelles Übungsdepot für 16- bis 20-Jährige.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

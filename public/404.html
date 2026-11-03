@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>GeldStart – Weiterleitung</title>
+    <script>
+      // Static hosting & GitHub Pages SPA fallback:
+      // Preserves repository subpath (e.g. /GeldStart/grundlagen -> /GeldStart/?route=%2Fgrundlagen)
+      // while also supporting root deployments (/grundlagen -> /?route=%2Fgrundlagen).
+      (function () {
+        var l = window.location;
+        var rawPath = l.pathname || "/";
+        var segments = rawPath.split("/").filter(Boolean);
+        var knownAppRoutes = {
+          lernen: true,
+          depot: true,
+          rechner: true,
+          mehr: true,
+          grundlagen: true,
+          zinseszins: true,
+          anlageklassen: true,
+          kindergeld: true,
+          altersvorsorgedepot: true,
+          altersvorsorge: true,
+          staat: true,
+          taschengeld: true
+        };
+
+        var basePrefix = "/";
+        var routePath = rawPath;
+
+        if (
+          segments.length >= 2 ||
+          (segments.length === 1 &&
+            l.hostname.indexOf("github.io") !== -1 &&
+            !knownAppRoutes[segments[0].toLowerCase()])
+        ) {
+          basePrefix = "/" + segments[0] + "/";
+          routePath = "/" + segments.slice(1).join("/");
+        }
+
+        var search = l.search ? "&" + l.search.slice(1) : "";
+        l.replace(
+          l.protocol +
+            "//" +
+            l.host +
+            basePrefix +
+            "?route=" +
+            encodeURIComponent(routePath) +
+            search +
+            l.hash
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="16" fill="#133A2B"/>
+  <!-- Stylized G + Rising Step Path Motif -->
+  <path
+    d="M35 16H25C18.9249 16 14 20.9249 14 27V37C14 43.0751 18.9249 48 25 48H37C43.0751 48 48 43.0751 48 37V31H32"
+    stroke="#F6F5EF"
+    stroke-width="5.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- Signature Learning Path Nodes -->
+  <path
+    d="M22 38L30 30L39 30L47 20"
+    stroke="#8CE9A6"
+    stroke-width="4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="22" cy="38" r="3.5" fill="#8CE9A6"/>
+  <circle cx="30" cy="30" r="3.5" fill="#8CE9A6"/>
+  <circle cx="47" cy="20" r="4" fill="#8CE9A6"/>
+</svg>
